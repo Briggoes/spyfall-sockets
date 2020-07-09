@@ -44,6 +44,12 @@ class Room {
     addClient(client) {
         this.clients.set(client.id, client)
     }
+    get(id) {
+        return this.clients.get(id)
+    }
+    has(id) {
+        return this.clients.has(id)
+    }
 }
 
 module.exports = { Rooms, Room }

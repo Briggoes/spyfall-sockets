@@ -6,49 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spyfall</title>
 
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css">
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
 </head>
 
+<style>
+    input {
+        display: inline-block;
+    }
+</style>
+
 <body>
-    <h1>Spyfall</h1>
-    <input type="text" value="ID de partida" id="joinMatchInpt"><br>
-    <input type="button" value="Unirse a partida" id="joinMatchBtn"><br>
-    <input type="button" value="Crear partida" id="createMatchBtn">
-    <h3>Como jugar</h3>
-    <p>A cada jugador, excepto uno, se le dará un lugar. El jugador que no sepa el lugar, es él espía. Los jugadores se harán preguntas entre si para delatar al espía. Su misión, si decide aceptarla, es pasar desapercibido.</p>
+    <div class="margin-small" id="main">
+        <h1 class="margin-bottom-small">Spyfall</h1>
+        <div class="margin-small">
+            <input type="text" placeholder="Nombre" id="name_field" class="margin-left-small margin-bottom-small">
+            <input type="text" placeholder="Codigo" id="room_field" class="margin-left-small margin-bottom-small">
+            <br>
+            <input type="button" value="Unirse a sala" id="joinMatchBtn" class="margin-left-small">
+            <input type="button" value="Crear sala" id="createMatchBtn" class="margin-left-small">
 
-    <script>
-        var socket = io('http://localhost:3000')
-        socket.on('connect', () => console.log('Connected'))
-        socket.on('disconnect', () => console.log('Disconnected'))
+        </div>
 
-        socket.on('event', data => console.log(data))
-        socket.on('message', (data) => console.log(data))
+        <h3 class="margin-bottom-small">Como jugar</h3>
+        <p>A cada jugador, excepto uno, se le dará un lugar. El jugador que no sepa el lugar, es él espía. Los jugadores
+            se
+            harán preguntas entre si para delatar al espía. Su misión, si decide aceptarla, es pasar desapercibido.</p>
+    </div>
 
-        // https://stackoverflow.com/a/57192874
-        var params = new URLSearchParams(document.location.search)
-        var matchId = params.get('match')
-        if (matchId) socket.emit('joinMatch', matchId)
+    <div class="margin-small" id="lobby" hidden>
+        <ul id="player_list"></ul>
+    </div>
 
-        socket.on('invalidMatch', () => {
-            alert('Match doesn\'t exist!')
-        })
-
-        var joinMatchInpt = document.getElementById('joinMatchInpt')
-        var joinMatchBtn = document.getElementById('joinMatchBtn')
-        joinMatchBtn.onclick = () => {
-            socket.emit('joinMatch', joinMatchInpt.value)
-        }
-
-        var createMatchBtn = document.getElementById('createMatchBtn')
-        createMatchBtn.onclick = () => {
-            socket.emit('createMatch')
-        }
-
-        socket.on('matchCreated', (matchId) => {
-            console.log(matchId)
-        })
-    </script>
+    <script src="js/spyfall.js"></script>
 </body>
 
 </html>
